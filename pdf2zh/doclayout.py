@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import contextlib
 from huggingface_hub import hf_hub_download
+from modelscope.hub.snapshot_download import snapshot_download
 
 
 class DocLayoutModel(abc.ABC):
@@ -67,8 +68,7 @@ class TorchModel(DocLayoutModel):
 
     @staticmethod
     def from_pretrained(repo_id: str, filename: str):
-        pth = hf_hub_download(repo_id=repo_id, filename=filename)
-        return TorchModel(pth)
+        return TorchModel("/Users/cnwenf/code/PDFMathTranslate/models/doclayout_yolo_docstructbench_imgsz1024.pt")
 
     @property
     def stride(self):
@@ -120,8 +120,9 @@ class OnnxModel(DocLayoutModel):
 
     @staticmethod
     def from_pretrained(repo_id: str, filename: str):
-        pth = hf_hub_download(repo_id=repo_id, filename=filename)
-        return OnnxModel(pth)
+        # pth = hf_hub_download(repo_id=repo_id, filename=filename)
+        # pth = snapshot_download(repo_id)
+        return OnnxModel("/Users/cnwenf/code/PDFMathTranslate/models/doclayout_yolo_docstructbench_imgsz1024.onnx")
 
     @property
     def stride(self):
