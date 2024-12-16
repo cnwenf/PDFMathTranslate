@@ -26,18 +26,18 @@ import requests
 import cgi
 
 service_map: dict[str, BaseTranslator] = {
-    "Google": GoogleTranslator,
+    # "Google": GoogleTranslator,
     "Bing": BingTranslator,
-    "DeepL": DeepLTranslator,
-    "DeepLX": DeepLXTranslator,
-    "Ollama": OllamaTranslator,
-    "AzureOpenAI": AzureOpenAITranslator,
-    "OpenAI": OpenAITranslator,
-    "Zhipu": ZhipuTranslator,
-    "Silicon": SiliconTranslator,
-    "Gemini": GeminiTranslator,
-    "Azure": AzureTranslator,
-    "Tencent": TencentTranslator,
+    # "DeepL": DeepLTranslator,
+    # "DeepLX": DeepLXTranslator,
+    # "Ollama": OllamaTranslator,
+    # "AzureOpenAI": AzureOpenAITranslator,
+    # "OpenAI": OpenAITranslator,
+    # "Zhipu": ZhipuTranslator,
+    # "Silicon": SiliconTranslator,
+    # "Gemini": GeminiTranslator,
+    # "Azure": AzureTranslator,
+    # "Tencent": TencentTranslator,
 }
 lang_map = {
     "Chinese": "zh",
@@ -196,7 +196,7 @@ custom_blue = gr.themes.Color(
 )
 
 with gr.Blocks(
-    title="PDFMathTranslate - PDF Translation with preserved formats",
+    title="PDF翻译",
     theme=gr.themes.Default(
         primary_hue=custom_blue, spacing_size="md", radius_size="lg"
     ),
@@ -235,12 +235,12 @@ with gr.Blocks(
     ),
 ) as demo:
     gr.Markdown(
-        "# [PDFMathTranslate @ GitHub](https://github.com/Byaidu/PDFMathTranslate)"
+        # "# [PDFMathTranslate @ GitHub](https://github.com/Byaidu/PDFMathTranslate)"
     )
 
     with gr.Row():
         with gr.Column(scale=1):
-            gr.Markdown("## File | < 5 MB" if flag_demo else "## File")
+            gr.Markdown("## 文件 | < 5 MB" if flag_demo else "## 文件")
             file_type = gr.Radio(
                 choices=["File", "Link"],
                 label="Type",
@@ -258,11 +258,11 @@ with gr.Blocks(
                 visible=False,
                 interactive=True,
             )
-            gr.Markdown("## Option")
+            gr.Markdown("## 翻译服务")
             service = gr.Dropdown(
                 label="Service",
                 choices=service_map.keys(),
-                value="Google",
+                value="Bing",
             )
             envs = []
             for i in range(3):
@@ -274,12 +274,12 @@ with gr.Blocks(
                 )
             with gr.Row():
                 lang_from = gr.Dropdown(
-                    label="Translate from",
+                    label="源文档语言",
                     choices=lang_map.keys(),
                     value="English",
                 )
                 lang_to = gr.Dropdown(
-                    label="Translate to",
+                    label="目标文档语言",
                     choices=lang_map.keys(),
                     value="Chinese",
                 )
@@ -306,12 +306,12 @@ with gr.Blocks(
                     gr.update(visible=file_type == "Link"),
                 )
 
-            output_title = gr.Markdown("## Translated", visible=False)
+            output_title = gr.Markdown("## 翻译后文档", visible=False)
             output_file_mono = gr.File(
-                label="Download Translation (Mono)", visible=False
+                label="下载目标语言文档", visible=False
             )
             output_file_dual = gr.File(
-                label="Download Translation (Dual)", visible=False
+                label="下载双语文档", visible=False
             )
             recaptcha_response = gr.Textbox(
                 label="reCAPTCHA Response", elem_id="verify", visible=False
@@ -320,10 +320,6 @@ with gr.Blocks(
             translate_btn = gr.Button("Translate", variant="primary")
             tech_details_tog = gr.Markdown(
                 f"""
-                    <summary>Technical details</summary>
-                    - GitHub: <a href="https://github.com/Byaidu/PDFMathTranslate">Byaidu/PDFMathTranslate</a><br>
-                    - GUI by: <a href="https://github.com/reycn">Rongxin</a><br>
-                    - Version: {__version__}
                 """,
                 elem_classes=["secondary-text"],
             )
@@ -354,7 +350,7 @@ with gr.Blocks(
             )
 
         with gr.Column(scale=2):
-            gr.Markdown("## Preview")
+            gr.Markdown("## 文档预览")
             preview = PDF(label="Document Preview", visible=True)
 
     # Event handlers

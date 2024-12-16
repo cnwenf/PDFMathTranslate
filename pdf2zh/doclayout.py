@@ -70,7 +70,8 @@ class OnnxModel(DocLayoutModel):
 
     @staticmethod
     def from_pretrained(repo_id: str, filename: str):
-        pth = hf_hub_download(repo_id=repo_id, filename=filename, etag_timeout=1)
+        #pth = hf_hub_download(repo_id=repo_id, filename=filename, etag_timeout=1)
+        pth = "/root/models/doclayout_yolo_docstructbench_imgsz1024.onnx"
         return OnnxModel(pth)
 
     @property
