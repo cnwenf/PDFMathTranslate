@@ -133,20 +133,21 @@ def translate_file(
             5 * 1024 * 1024 if flag_demo else None,
         )
 
+    lang_from = lang_map[lang_from]
+    lang_to = lang_map[lang_to]
+
     filename = os.path.splitext(os.path.basename(file_path))[0]
     file_raw = output / f"{filename}.pdf"
-    file_mono = output / f"{filename}-cn.pdf"
+    file_mono = output / f"{filename}-{lang_to}.pdf"
     file_dual = output / f"{filename}-dual.pdf"
 
     translator = service_map[service]
     selected_page = page_map[page_range]
-    lang_from = lang_map[lang_from]
-    lang_to = lang_map[lang_to]
 
     for i, env in enumerate(translator.envs.items()):
         os.environ[env[0]] = envs[i]
 
-    print(f"Files before translation: {os.listdir(output)}")
+    print(f"Files {file_mono}, {file_dual} before translation: {os.listdir(output)}")
 
     def progress_bar(t: tqdm.tqdm):
         progress(t.n / t.total, desc="翻译中...")
@@ -245,6 +246,7 @@ with gr.Blocks(
                 choices=["File", "Link"],
                 label="Type",
                 value="File",
+                visible=False
             )
             file_input = gr.File(
                 label="File",

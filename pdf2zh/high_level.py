@@ -276,7 +276,7 @@ def translate(
         doc_raw = open(file, "rb")
         s_raw = doc_raw.read()
         s_mono, s_dual = translate_stream(s_raw, **locals())
-        file_mono = Path(output) / f"{filename}-mono.pdf"
+        file_mono = Path(output) / f"{filename}-{lang_out}.pdf"
         file_dual = Path(output) / f"{filename}-dual.pdf"
         doc_mono = open(file_mono, "wb")
         doc_dual = open(file_dual, "wb")
