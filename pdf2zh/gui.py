@@ -403,7 +403,7 @@ def setup_gui(share=False):
     import doclayout_yolo  # cache # noqa: F401
 
     if flag_demo:
-        demo.launch(server_name="0.0.0.0", max_file_size="5mb", inbrowser=True)
+        demo.launch(server_name="0.0.0.0", node_port=80, max_file_size="5mb", inbrowser=True)
     else:
         try:
             demo.launch(server_name="0.0.0.0", debug=True, inbrowser=True, share=share)
