@@ -136,7 +136,9 @@ def parse_args(args: Optional[List[str]]) -> argparse.Namespace:
 
 
 def main(args: Optional[List[str]] = None) -> int:
-    logging.basicConfig()
+    logging.basicConfig(level=logging.INFO,
+                        format='%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s',
+                        filename="/var/log/pdf2zh.log")
 
     parsed_args = parse_args(args)
 

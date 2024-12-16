@@ -51,9 +51,9 @@ lang_map = {
     "Italian": "it",
 }
 page_map = {
-    "All": None,
-    "First": [0],
-    "First 5 pages": list(range(0, 5)),
+    "全部": None,
+    "第一页": [0],
+    "前10页": list(range(0, 10)),
 }
 
 flag_demo = False
@@ -135,7 +135,7 @@ def translate_file(
 
     filename = os.path.splitext(os.path.basename(file_path))[0]
     file_raw = output / f"{filename}.pdf"
-    file_mono = output / f"{filename}-mono.pdf"
+    file_mono = output / f"{filename}-cn.pdf"
     file_dual = output / f"{filename}-dual.pdf"
 
     translator = service_map[service]
@@ -149,7 +149,7 @@ def translate_file(
     print(f"Files before translation: {os.listdir(output)}")
 
     def progress_bar(t: tqdm.tqdm):
-        progress(t.n / t.total, desc="Translating...")
+        progress(t.n / t.total, desc="翻译中...")
 
     param = {
         "files": [str(file_raw)],
@@ -263,6 +263,7 @@ with gr.Blocks(
                 label="Service",
                 choices=service_map.keys(),
                 value="Bing",
+                visible=False
             )
             envs = []
             for i in range(3):
@@ -285,7 +286,7 @@ with gr.Blocks(
                 )
             page_range = gr.Radio(
                 choices=page_map.keys(),
-                label="Pages",
+                label="翻译页数",
                 value=list(page_map.keys())[0],
             )
 
@@ -404,6 +405,7 @@ def setup_gui(share=False):
         demo.launch(server_name="0.0.0.0", max_file_size="5mb", inbrowser=True)
     else:
         try:
+            demo.queue(max_size=5)
             demo.launch(server_name="0.0.0.0", debug=True, inbrowser=True, share=share)
         except Exception:
             print(
