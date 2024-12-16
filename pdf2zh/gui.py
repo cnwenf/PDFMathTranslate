@@ -409,7 +409,7 @@ def setup_gui(share=False):
     else:
         try:
             demo.queue(max_size=5)
-            demo.launch(server_name="0.0.0.0", debug=True, inbrowser=True, share=share)
+            demo.launch(server_name="0.0.0.0", server_port=8080, debug=True, inbrowser=True, share=share)
         except Exception:
             print(
                 "Error launching GUI using 0.0.0.0.\nThis may be caused by global mode of proxy software."
