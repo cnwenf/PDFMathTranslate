@@ -68,7 +68,7 @@ class TorchModel(DocLayoutModel):
 
     @staticmethod
     def from_pretrained(repo_id: str, filename: str):
-        return TorchModel("/Users/cnwenf/code/PDFMathTranslate/models/doclayout_yolo_docstructbench_imgsz1024.pt")
+        return TorchModel("./models/doclayout_yolo_docstructbench_imgsz1024.pt")
 
     @property
     def stride(self):
@@ -122,7 +122,7 @@ class OnnxModel(DocLayoutModel):
     def from_pretrained(repo_id: str, filename: str):
         # pth = hf_hub_download(repo_id=repo_id, filename=filename)
         # pth = snapshot_download(repo_id)
-        return OnnxModel("/Users/cnwenf/code/PDFMathTranslate/models/doclayout_yolo_docstructbench_imgsz1024.onnx")
+        return OnnxModel("./models/doclayout_yolo_docstructbench_imgsz1024.onnx")
 
     @property
     def stride(self):
