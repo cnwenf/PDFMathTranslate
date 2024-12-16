@@ -2,6 +2,7 @@ import os
 import shutil
 from pathlib import Path
 from pdf2zh import __version__
+import uuid
 from pdf2zh.high_level import translate
 from pdf2zh.translator import (
     BaseTranslator,
@@ -117,7 +118,7 @@ def translate_file(
 
     progress(0, desc="Starting translation...")
 
-    output = Path("pdf2zh_files")
+    output = Path(f"pdf2zh_files/{str(uuid.uuid4())}")
     output.mkdir(parents=True, exist_ok=True)
 
     if file_type == "File":
@@ -139,7 +140,7 @@ def translate_file(
     filename = os.path.splitext(os.path.basename(file_path))[0]
     file_raw = output / f"{filename}.pdf"
     file_mono = output / f"{filename}-{lang_to}.pdf"
-    file_dual = output / f"{filename}-dual.pdf"
+    file_dual = output / f"{filename}-{lang_from}-{lang_to}.pdf"
 
     translator = service_map[service]
     selected_page = page_map[page_range]
