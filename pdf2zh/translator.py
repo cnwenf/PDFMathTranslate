@@ -357,9 +357,6 @@ class TencentTranslator(BaseTranslator):
 
 class QwenTranslator(BaseTranslator):
     name = "qwen"
-    envs = {
-        "DASHSCOPE_API_KEY": None,
-    }
 
     def __init__(self, lang_in, lang_out, model):
         super().__init__(lang_in, lang_out, model)
@@ -376,17 +373,31 @@ class QwenTranslator(BaseTranslator):
             model=self.model,
             messages=self.prompt(text),
         )
-        return response.choices[0].message.content.strip()
+        r = response.choices[0].message.content.strip()
+        print(r)
+        pattern = r"<translate>\n(.*?)\n</translate>"
+        match = re.search(pattern, r, re.DOTALL)
+        if match:
+            r = match.group(1).strip()
+        return r
 
     def prompt(self, text):
-        def prompt(self, text):
-            return [
-                {
-                    "role": "system",
-                    "content": "你是一个专业的文本翻译专家。",
-                },
-                {
-                    "role": "user",
-                    "content": f"当前文本是{self.lang_in}，将文本翻译为{self.lang_out}. \n当前文本: {text}\n翻译后文本:",  # noqa: E501
-                },
-            ]
+        return [
+            {
+                "role": "system",
+                "content": "你是一个专业的文本翻译专家。",
+            },
+            {
+                "role": "user",
+                "content": f"""
+## 说明
+当前文本是{self.lang_in}，将文本翻译为{self.lang_out}。
+## 限制
+ - 只需返回翻译后文本，不要其他文字。翻译后的文本使用<translate></translate>覆盖。
+## 返回示例
+<translate>翻译后的文本</translate>
+
+## 当前文本
+{text}
+"""},
+        ]
