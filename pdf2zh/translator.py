@@ -10,6 +10,7 @@ import openai
 import requests
 from azure.ai.translation.text import TextTranslationClient
 from azure.core.credentials import AzureKeyCredential
+from openai import OpenAI
 from tencentcloud.common import credential
 from tencentcloud.tmt.v20180321.tmt_client import TmtClient
 from tencentcloud.tmt.v20180321.models import TextTranslateRequest
@@ -352,3 +353,40 @@ class TencentTranslator(BaseTranslator):
         self.req.SourceText = text
         resp: TextTranslateResponse = self.client.TextTranslate(self.req)
         return resp.TargetText
+
+
+class QwenTranslator(BaseTranslator):
+    name = "qwen"
+    envs = {
+        "DASHSCOPE_API_KEY": None,
+    }
+
+    def __init__(self, lang_in, lang_out, model):
+        super().__init__(lang_in, lang_out, model)
+        self.client = OpenAI(
+            # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx",
+            api_key=os.getenv("DASHSCOPE_API_KEY"),
+            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+            timeout=300
+        )
+        self.model = "qwen-plus"
+
+    def translate(self, text):
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=self.prompt(text),
+        )
+        return response.choices[0].message.content.strip()
+
+    def prompt(self, text):
+        def prompt(self, text):
+            return [
+                {
+                    "role": "system",
+                    "content": "你是一个专业的文本翻译专家。",
+                },
+                {
+                    "role": "user",
+                    "content": f"当前文本是{self.lang_in}，将文本翻译为{self.lang_out}. \n当前文本: {text}\n翻译后文本:",  # noqa: E501
+                },
+            ]

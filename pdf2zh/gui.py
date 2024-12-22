@@ -17,7 +17,7 @@ from pdf2zh.translator import (
     SiliconTranslator,
     GeminiTranslator,
     AzureTranslator,
-    TencentTranslator,
+    TencentTranslator, QwenTranslator,
 )
 
 import gradio as gr
@@ -29,6 +29,7 @@ import cgi
 service_map: dict[str, BaseTranslator] = {
     # "Google": GoogleTranslator,
     "Bing": BingTranslator,
+    "Qwen": QwenTranslator,
     # "DeepL": DeepLTranslator,
     # "DeepLX": DeepLXTranslator,
     # "Ollama": OllamaTranslator,
@@ -266,7 +267,7 @@ with gr.Blocks(
                 label="Service",
                 choices=service_map.keys(),
                 value="Bing",
-                visible=False
+                visible=True
             )
             envs = []
             for i in range(3):
