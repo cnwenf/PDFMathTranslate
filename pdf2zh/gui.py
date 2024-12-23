@@ -29,7 +29,7 @@ import cgi
 service_map: dict[str, BaseTranslator] = {
     # "Google": GoogleTranslator,
     "Bing": BingTranslator,
-    "Qwen": QwenTranslator,
+    # "Qwen": QwenTranslator,
     # "DeepL": DeepLTranslator,
     # "DeepLX": DeepLXTranslator,
     # "Ollama": OllamaTranslator,
@@ -267,7 +267,7 @@ with gr.Blocks(
                 label="Service",
                 choices=service_map.keys(),
                 value="Bing",
-                visible=True
+                visible=False
             )
             envs = []
             for i in range(3):
@@ -409,8 +409,16 @@ def setup_gui(share=False):
         demo.launch(server_name="0.0.0.0", max_file_size="5mb", inbrowser=True)
     else:
         try:
-            demo.queue(max_size=5)
-            demo.launch(server_name="0.0.0.0", max_file_size="100mb", server_port=8080, debug=True, inbrowser=True, share=share)
+            (demo
+             .queue(max_size=5)
+             .launch(server_name="0.0.0.0",
+                     max_file_size="100mb",
+                     server_port=8080,
+                     debug=True,
+                     inbrowser=True,
+                     share=share
+            )
+             )
         except Exception:
             print(
                 "Error launching GUI using 0.0.0.0.\nThis may be caused by global mode of proxy software."
