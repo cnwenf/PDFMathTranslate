@@ -232,12 +232,13 @@ with gr.Blocks(
             el.dispatchEvent(new Event('input'));
         };
     </script>
+    """
+        if flag_demo
+        else """
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8666811484806886"
      crossorigin="anonymous">
      </script>
-    """
-        if flag_demo
-        else ""
+        """
     ),
 ) as demo:
     gr.Markdown(
